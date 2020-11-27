@@ -1,0 +1,3 @@
+[console_scripts]
+cymruwhois = cymruwhois:lookup_stdin
+
