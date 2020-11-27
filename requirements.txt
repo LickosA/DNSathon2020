@@ -1,5 +1,5 @@
 adblockparser==0.7
-apsw==3.28.0.post1
+apsw==3.9.2-r1
 apturl==0.5.2
 bcrypt==3.1.7
 beautifulsoup4==4.6.0
