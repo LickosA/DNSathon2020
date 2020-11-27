@@ -21,21 +21,24 @@ def checkSOA(host):
         infos['INFO_SOA']['number'] = soa_len
     except Exception as e:
         infos['INFO_SOA'] = False
+
+
 def checkMX(host):
     try:
         answers = dns.resolver.resolve(host,'MX')
         mx = []
         mx_len = len(answers)
         for rdata in answers:
-           mx.append(rdata.to_text())
+           mx.append(rdata)
 
         infos['mx']['list'] = mx
         infos['mx']['number'] = mx_len
     except Exception as e:
         infos['mx'] = False
 
+
 def check_ns(domain="gouv.bj"):
-    result = dns.resolver.query(domain, 'NS')
+    result = dns.resolver.resolve(domain, 'NS')
     ns_len = len(result)
     ns = []
     for ipval in result:
@@ -59,29 +62,33 @@ def check_ns(domain="gouv.bj"):
                 asn = r.asn
                 infos['INFO_NS']['same_asn'] = True
 
+
 # Define a function to resolver nameserver into ipv4.
 def ns_resolver(ns: str) -> str:
     try:
         res = socket.getaddrinfo(ns, None, socket.AF_INET)[0][4][0]
-    except Exception:
+    except Exception as e:
         res = 'Failed'
     return res
+
 
 # Define a function to resolver nameserver into ipv6.
 def ns_resolverV6(ns: str) -> str:
     try:
         res = socket.getaddrinfo(ns, None, socket.AF_INET6)[0][4][0]
-    except Exception:
+    except Exception as e:
         res = 'Failed'
     return res
+
 
 # Define the function to extract list of NS for each ccTLDs
 def domain_ns_retrieval(domain: str) -> str:
     try:
         res = [ns.__str__() for ns in dns.resolver.query(domain + '.', 'NS')]
-    except Exception:
+    except Exception as e:
         res = 'U'
     return res
+
 
 # Define EDNS Tests list
 edns_test_dict = {'dns_plain': ['dig', '+norec', '+noedns', 'soa'],
