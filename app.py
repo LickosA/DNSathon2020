@@ -8,6 +8,7 @@ from cymruwhois import Client
 import os
 import re, socket, subprocess
 import time
+import requests
 
 app = Flask(__name__)
 infos = {}
@@ -16,7 +17,7 @@ infos = {}
 def check_if_dns_exist(domain):
     try:
         socket.gethostbyname(domain)
-        infos['exist'] = True
+        infos['EXIST'] = True
         return True
     except socket.gaierror:
         return False
@@ -59,6 +60,17 @@ def check_ns(domain="gouv.bj"):
         'list': ns,
         'number': ns_len,
     }
+    #Get localisation
+    infos['INFO_NS']['ns_location'] = {}
+    for name in ns:
+        ip = socket.gethostbyname(name)
+        response = requests.get('http://ip-api.com/json/'+ip)
+        res = response.json()
+        infos['INFO_NS']['ns_location'][name] = res['country']+", "+res['city']
+
+
+
+    #  Check ASN
     if ns_len >= 2:
         asn = 0
         for name in ns:
@@ -241,7 +253,7 @@ def audit(domain):
         return jsonify(infos)
     else:
         return jsonify({
-            'exist': False
+            'EXIST': False
         })
 
 
