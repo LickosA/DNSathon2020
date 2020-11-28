@@ -1,8 +1,15 @@
 from flask import Flask, jsonify, request
 from api import *
+from flask import render_template
 
 app = Flask(__name__)
 
+
+@app.route('/')
+
+@app.route('/audit')
+def index():
+    return render_template('test.html', title='Home')
 
 
 @app.route('/api/audit/<domain>', methods=['GET'])
@@ -58,4 +65,4 @@ def audit(domain):
 
 
 if __name__ == '__main__':
-    app.run(debug=True,  port=5555)
+    app.run(debug=True)
