@@ -182,7 +182,7 @@ def edns_tests_full(domain: str, nameserver: str = None) -> list:
 
 
 def check_dnssec(domain):
-    dnssec = os.popen(f"dig {domain} +dnssec|egrep -w '^flags|ad'|wc -l")
+    dnssec = os.popen(f"dig {domain} +dnssec @9.9.9.9|egrep -w '^flags|ad'|wc -l")
     dnssec = dnssec.read()
     infos['SEC_DNSSEC'] = {}
     if int(dnssec) == 0:
@@ -190,14 +190,14 @@ def check_dnssec(domain):
     else:
         infos['SEC_DNSSEC']['exist'] = True
 
-    val = os.popen(f"dig DNSKEY {domain} +dnssec|egrep -w '^flags|ad'|wc -l")
+    val = os.popen(f"dig DNSKEY {domain} +dnssec @9.9.9.9|egrep -w '^flags|ad'|wc -l")
     val = val.read()
     if int(val) == 0:
         infos['SEC_DNSSEC']['dns_key'] = False
     else:
         infos['SEC_DNSSEC']['dns_key'] = True
 
-    val = os.popen(f"dig DS {domain} +trace|egrep -w '^flags|ad'|wc -l")
+    val = os.popen(f"dig DS {domain} +trace @9.9.9.9|egrep -w '^flags|ad'|wc -l")
     val = val.read()
     if int(val) == 0:
         infos['SEC_DNSSEC']['ds'] = False
