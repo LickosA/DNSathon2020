@@ -2,39 +2,51 @@ from flask import Flask, jsonify, request
 import urllib.request
 import sys
 import dns.resolver
+import dns.ttl
 import socket
 from cymruwhois import Client
 import os
 import re, socket, subprocess
+import time
 
 app = Flask(__name__)
 infos = {}
 
-def checkSOA(host):
+
+def check_if_dns_exist(domain):
     try:
-        answers = dns.resolver.resolve(host, 'SOA')
-        soa = []
-        soa_len = len(answers)
-        for rdata in answers:
-            soa.append(rdata.to_text())
-        infos['INFO_SOA']['list'] = soa
-        infos['INFO_SOA']['number'] = soa_len
-    except Exception as e:
+        socket.gethostbyname(domain)
+        infos['exist'] = True
+        return True
+    except socket.gaierror:
+        return False
+
+
+def check_soa(domain):
+    try:
+        answer = dns.resolver.resolve(domain, "SOA")
+        infos['INFO_SOA'] = True
+    except dns.resolver.NoAnswer:
         infos['INFO_SOA'] = False
 
 
-def checkMX(host):
+def check_mx(domain):
     try:
-        answers = dns.resolver.resolve(host,'MX')
+        answer = dns.resolver.resolve(domain, "MX")
         mx = []
-        mx_len = len(answers)
-        for rdata in answers:
-           mx.append(rdata)
-
-        infos['mx']['list'] = mx
-        infos['mx']['number'] = mx_len
-    except Exception as e:
-        infos['mx'] = False
+        for rdata in answer:
+            mx.append(rdata.to_text())
+        infos['INFO_MX'] = {
+            'exist': True,
+            'list': mx,
+            'number': len(mx)
+        }
+    except dns.resolver.NoAnswer:
+        infos['INFO_MX'] = {
+            'exist': False,
+            'list': 0,
+            'number': 0
+        }
 
 
 def check_ns(domain="gouv.bj"):
@@ -84,7 +96,7 @@ def ns_resolverV6(ns: str) -> str:
 # Define the function to extract list of NS for each ccTLDs
 def domain_ns_retrieval(domain: str) -> str:
     try:
-        res = [ns.__str__() for ns in dns.resolver.query(domain + '.', 'NS')]
+        res = [ns.__str__() for ns in dns.resolver.resolve(domain, 'NS')]
     except Exception as e:
         res = 'U'
     return res
@@ -151,35 +163,50 @@ def run_ednsComp_test(zone: str, ns: str):
 
 def edns_tests_full(domain: str, nameserver: str = None) -> list:
     all_results = []
-    if nameserver is not None:
-        results = run_ednsComp_test(zone=domain, ns=nameserver)
-        all_results.append(results)
+    nameservers = domain_ns_retrieval(domain=domain)
+    print(nameservers)
+    all_results.append(run_ednsComp_test(zone=domain, ns=nameservers[0]))
+    if all_results[0]['EDNS']:
+        infos['PERFORMANCE_EDNS'] = True
     else:
-        nameservers = domain_ns_retrieval(domain=domain)
-        for nameserver in nameservers:
-            all_results.append(run_ednsComp_test(zone=domain, ns=nameserver))
-    print(all_results)
-    return all_results
+        infos['PERFORMANCE_EDNS'] = True
 
 
-
-@app.route('/api/audit/<domain>', methods=['GET'])
-def test(domain):
-    dnssec = os.popen(f"dig {domain} +dnssec @9.9.9.9|egrep -w '^flags|ad'|wc -l")
+def check_dnssec(domain):
+    dnssec = os.popen(f"dig {domain} +dnssec|egrep -w '^flags|ad'|wc -l")
     dnssec = dnssec.read()
-
+    infos['SEC_DNSSEC'] = {}
     if int(dnssec) == 0:
-        infos['SEC_DNSSEC'] = False
+        infos['SEC_DNSSEC']['exist'] = False
     else:
-        infos['SEC_DNSSEC'] = True
+        infos['SEC_DNSSEC']['exist'] = True
 
-    ipv6 = os.popen(f"dig {domain} AAAA +short")
-    ipv6 = ipv6.read()
-    if ipv6 != " ":
+    val = os.popen(f"dig DNSKEY {domain} +dnssec|egrep -w '^flags|ad'|wc -l")
+    val = val.read()
+    if int(val) == 0:
+        infos['SEC_DNSSEC']['dns_key'] = False
+    else:
+        infos['SEC_DNSSEC']['dns_key'] = True
+
+    val = os.popen(f"dig DS {domain} +trace|egrep -w '^flags|ad'|wc -l")
+    val = val.read()
+    if int(val) == 0:
+        infos['SEC_DNSSEC']['ds'] = False
+    else:
+        infos['SEC_DNSSEC']['ds'] = True
+
+
+def check_ipv6(domain):
+    try:
+        answer = dns.resolver.resolve(domain, "AAAA")
         infos['INFO_IPV6'] = True
-    else:
+    except dns.resolver.NoAnswer:
         infos['INFO_IPV6'] = False
+    # except dns.resolver.NXDOMAIN:
+    #     print "No such domain"
 
+
+def check_ssl(domain):
     sys.stderr = open("/dev/null")
     result = sys.stderr = urllib.request.urlopen(f"http://www.{domain}").getcode()
     if result:
@@ -188,12 +215,34 @@ def test(domain):
         infos['SEC_SSL'] = False
 
 
-    check_ns(domain)
-    #edns_tests_full(domain)
-    # checkSOA(domain)
-    # checkMX(domain)
+def get_performance(domain):
+    dns_start = time.time()
+    socket.gethostbyname(domain)
+    dns_end = time.time()
+    dnstime = (dns_end - dns_start) *1000
+    infos['PERFORMANCE_DNSTIME'] ='%.2f ms' % dnstime
 
-    return jsonify(infos)
+
+@app.route('/api/audit/<domain>', methods=['GET'])
+def audit(domain):
+
+    if check_if_dns_exist(domain):
+        check_ns(domain)
+        check_soa(domain)
+        check_mx(domain)
+        check_ipv6(domain)
+
+        check_dnssec(domain)
+        check_ssl(domain)
+
+        edns_tests_full(domain)
+        get_performance(domain)
+
+        return jsonify(infos)
+    else:
+        return jsonify({
+            'exist': False
+        })
 
 
 
@@ -227,4 +276,4 @@ def test(domain):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="192.168.12.81", port=5555)
+    app.run(debug=True,  port=5555)
