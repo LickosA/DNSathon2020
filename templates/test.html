@@ -40,10 +40,10 @@
 
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item "><a href="/" class="nav-link">Accueil</a></li>
+                    <!--<li class="nav-item "><a href="/" class="nav-link">Accueil</a></li>
                     <li class="nav-item active"><a href="/audit" class="nav-link ">test</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">Documentation</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>-->
                 </ul>
             </div>
         </div>
@@ -67,6 +67,7 @@
                         </div>
                     </form>
                 </div>
+                <div id="message" style="text-align: center;margin: auto;margin-top: 10px;"></div>
 
             </div>
         </div>
@@ -230,6 +231,10 @@
         function tester() {
 
             // show();
+            
+            $('#message').removeClass();
+            $('#message').hide();
+            document.getElementById('answ').style.display = 'none';
 
             var audit = "http://127.0.0.1:5555/api/audit/";
             var dns = document.getElementById('dnsname').value;
@@ -259,7 +264,12 @@
                 contentType: "application/json",
                 success: function(data){
                    HoldOn.close()
-                    $('.infos').html(`
+                    if (data.EXIST == true){
+                        $('#message').addClass("alert alert-success");
+                        $('#message').html('Le nom de domaine existe');
+                        $('#message').show();
+
+                        $('.infos').html(`
                         <p>IPV6 : ${ data.INFO_IPV6 ==  true ? "Activé" : "Non activité." }</p>
                         <p>MX (serveur mail) : ${ data.INFO_MX.exist ==  true ? "Disponible" : "Non disponible." }</p>
                         <p>SOA : ${ data.INFO_SOA ==  true ? "Disponible" : "Non disponible." }</p>
@@ -270,28 +280,34 @@
                             </ul>
                         </p>
                     `)
-                    $('.resiliance').html(`
-                        <p>NS:
-                            <ul>
-                                <li>Nombre: ${data.INFO_NS.number >= 2 ? "Félicitations! Vous avez 2 ou plusieurs NS" : "Attention! Vous n'avez qu'un NS" }</li>
+                        $('.resiliance').html(`
+                            <p>NS:
+                                <ul>
+                                    <li>Nombre: ${data.INFO_NS.number >= 2 ? "Félicitations! Vous avez 2 ou plusieurs NS" : "Attention! Vous n'avez qu'un NS" }</li>
 
-                                <li>${data.INFO_NS.same_asn == false && data.INFO_NS.number >= 2 ? "ASN: Félicitations! Vos NS ne sont pas dans le même ASN" : (data.INFO_NS.same_asn == true && data.INFO_NS.number >= 2 ? "Attention! Vos NS sont dans le même ASN" : "RAS") }</li>
-                            </ul>
-                        </p>
-                    `)
+                                    <li>${data.INFO_NS.same_asn == false && data.INFO_NS.number >= 2 ? "ASN: Félicitations! Vos NS ne sont pas dans le même ASN" : (data.INFO_NS.same_asn == true && data.INFO_NS.number >= 2 ? "Attention! Vos NS sont dans le même ASN" : "RAS") }</li>
+                                </ul>
+                            </p>
+                        `)
 
-                    $('.performance').html(`
-                        <p>Temps de reponse: ${data.PERFORMANCE_DNSTIME}</p>
-                        <p>EDNS: ${data.PERFORMANCE_EDNS == true ? "Disponible" : "Non disponible"}</p>
-                    `)
+                        $('.performance').html(`
+                            <p>Temps de reponse: ${data.PERFORMANCE_DNSTIME}</p>
+                            <p>EDNS: ${data.PERFORMANCE_EDNS == true ? "Disponible" : "Non disponible"}</p>
+                        `)
 
-                    $('.securite').html(`
-                        <p>DNSSEC: ${data.SEC_DNSSEC.exist == true ? "Activé" : "Non activé"}</p>
-                        <p>DNSKEY: ${data.SEC_DNSSEC.dns_key == true ? "Trouvé" : "Non trouvé"}</p>
-                        <p>DS: ${data.SEC_DNSSEC.ds == true ? "Trouvé" : "Non trouvé"}</p>
-                        <p>SSL: ${data.SEC_SSL == true ? "Activé" : "Non activé"}</p>
-                    `)
+                        $('.securite').html(`
+                            <p>DNSSEC: ${data.SEC_DNSSEC.exist == true && data.SEC_DNSSEC.ds == true ? "Activé" : "Non activé"}</p>
+                            <p>DNSKEY: ${data.SEC_DNSSEC.dns_key == true ? "Trouvé" : "Non trouvé"}</p>
+                            <p>DS: ${data.SEC_DNSSEC.ds == true ? "Trouvé" : "Non trouvé"}</p>
+                            <p>SSL: ${data.SEC_SSL == true ? "Activé" : "Non activé"}</p>
+                        `)
                     show()
+                    }else{
+                        $('#message').addClass("alert alert-danger");
+                        $('#message').html('Le nom de domaine n\'existe pas');
+                        $('#message').show();
+                    }
+
                     console.log(data)
                 },
                 error: function (error) {

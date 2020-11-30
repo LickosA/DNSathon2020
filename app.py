@@ -35,34 +35,5 @@ def audit(domain):
 
 
 
-
-
-# def checkexistdnssec(domain):
-#     val = os.popen(f"dig {domain} +dnssec|egrep -w '^flags|ad'|wc -l")
-#     val = val.read()
-#     if int(val) == 0:
-#         return "DNSSEC Not EXIST"
-#     else:
-#         return "DNSSEC OK"
-#
-#
-# def checkdnssecreccord(domain):
-#     val = os.popen(f"dig DNSKEY {domain} +short|egrep -w '^flags|ad'|wc -l")
-#     val = val.read()
-#     if int(val) == 0:
-#         return "No DNSKEY records found"
-#     else:
-#         return "DNSKEY reccord EXIST"
-
-
-# def checktrustdnssec(domain):
-#     val = os.popen(f"dig DS {domain} +trace|egrep -w '^flags|ad'|wc -l")
-#     val = val.read()
-#     if int(val) == 0:
-#         return "No DS records found for {domain}"
-#     else:
-#         return "DS record found"
-
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5555)

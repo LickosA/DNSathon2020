@@ -1,3 +1,14 @@
+import urllib.request
+import sys
+import dns.resolver
+import dns.ttl
+import socket
+from cymruwhois import Client
+import os
+import re, socket, subprocess
+import time
+import requests
+
 infos = {}
 
 
@@ -107,16 +118,6 @@ edns_test_dict = {'dns_plain': ['dig', '+norec', '+noedns', 'soa'],
                   'edns_dnssec': ['dig', '+norec', '+dnssec', 'soa'],
                   'edns_tcp': ['dig', '+norec', '+tcp', 'soa']}
 
-import urllib.request
-import sys
-import dns.resolver
-import dns.ttl
-import socket
-from cymruwhois import Client
-import os
-import re, socket, subprocess
-import time
-import requests
 
 # Define function to execute dig command
 def run_dig_cmd(cmd: list, pkt_size=False, flag=False, aa_zone=None)  -> list:
