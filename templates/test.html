@@ -218,25 +218,16 @@
             document.getElementById('answ').style.display = '';
         }
 
-
-        var audit = "http://localhost/api/audit/";
-        var dns = document.getElementById('dnsname').value;
-        var result = audit + dns;
-        console.log(result);
-        //request.open("GET", result);
-        //request.send();
-
-
-
         function tester() {
 
-            // show();
             
             $('#message').removeClass();
             $('#message').hide();
             document.getElementById('answ').style.display = 'none';
 
-            var audit = "http://127.0.0.1:5555/api/audit/";
+            var audit = "/api/audit/";
+            console.log(audit);
+
             var dns = document.getElementById('dnsname').value;
             var result = audit + dns;
             console.log(result);
