@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/audit')
 def index():
-    return render_template('test.html', title='Home')
+    return render_template('index.html', title='Home')
 
 
 @app.route('/api/audit/<domain>', methods=['GET'])
