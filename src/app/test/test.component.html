@@ -1,0 +1,341 @@
+<section class="ftco-domain pt-5" style="height: 600px;">
+    <div class="container pt-5">
+        <div class="row d-flex pt-5 " style="margin-top: 50px;">
+            <div class="col-lg-12 heading-white mb-4 mb-sm-4 mb-lg-0 ftco-animate">
+                <h2 class="text-center mb-3">Entrez votre nom de domaine</h2>
+                <p class="text-center mb-5">Pour réaliser des mesures sur le Système des Noms de Domaines, de l’internet et de réaliser l'audit de l'infrastructure DNS</p>
+            </div>
+
+            <div class="col-lg-12 ftco-wrap ftco-animate" style="margin-left: 60px;">
+                <form class="domain-form d-flex" id="form">
+                    <div class="form-group domain-name">
+                        <input [(ngModel)]="dn" name="dn" type="text" style="border-radius: 0" class="form-control name px-4" placeholder="Entrer votre nom de domaine..." id="dnsname">
+                    </div>
+                    <div class="form-group domain-select d-flex">
+                        <button (click)="makeAudit()" class="search-domain btn btn-primary text-center">Auditer</button>
+                    </div>
+                </form>
+            </div>
+
+            <div *ngIf='loading' class="spinner-border center text-primary" style="width: 5rem; height: 5rem; margin:auto; margin-top: 30px" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- <section class="ftco-section bg-light" id="answ" *ngIf='showResults'> -->
+<section class="ftco-section bg-light" *ngIf='showResults' id="answ">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-7 text-center heading-section ftco-animate">
+                <h2 class="mb-4">Résultats du test</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 ftco-animate">
+                <div id="accordion">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="card-link" data-toggle="collapse" href="#menuone" aria-expanded="true" aria-controls="menuone">
+                                            Informations générales
+                                            <span class="collapsed">
+                                                <i class="icon-plus-circle"></i>
+                                            </span>
+                                                
+                                            <span class="expanded">
+                                                <i class="icon-minus-circle"></i>
+                                            </span>
+                                        </a>
+                                </div>
+                                <div id="menuone" class="collapse show">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 ftco-animate">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead class="thead-primary">
+                                                            <tr>
+                                                                <th class="text-allign">Libellés</th>
+                                                                <th colspan="4">Observations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-allign">IPV6 Info</td>
+                                                                <td colspan="4">
+                                                                    <img *ngIf='auditResults.INFO_IPV6' src="../../assets/images/yes.png" alt="_true">
+                                                                    <img *ngIf='auditResults.INFO_IPV6 == false' src="../../assets/images/no.png" alt="_false">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-allign">Information SOA</td>
+                                                                <td colspan="4">
+                                                                    <img *ngIf='auditResults.INFO_SOA' src="../../assets/images/yes.png" alt="_true">
+                                                                    <img *ngIf='auditResults.INFO_SOA == false' src="../../assets/images/no.png" alt="_false">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-allign">Performance temps DNS</td>
+                                                                <td colspan="4">{{auditResults.PERFORMANCE_DNSTIME}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-allign">Performance E_DNS</td>
+                                                                <td colspan="4">
+                                                                    <img *ngIf='auditResults.PERFORMANCE_EDNS' src="../../assets/images/yes.png" alt="_true">
+                                                                    <img *ngIf='auditResults.PERFORMANCE_EDNS == false' src="../../assets/images/no.png" alt="_false">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-allign">Securité SSL</td>
+                                                                <td colspan="4">
+                                                                    <img *ngIf='auditResults.SEC_SSL' src="../../assets/images/yes.png" alt="_true">
+                                                                    <img *ngIf='auditResults.SEC_SSL == false' src="../../assets/images/no.png" alt="_false">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="card-link" data-toggle="collapse" href="#menutwo" aria-expanded="false" aria-controls="menutwo">Serveurs de Messagerie <span class="collapsed"><i class="icon-plus-circle"></i></span><span class="expanded"><i class="icon-minus-circle"></i></span></a>
+                                </div>
+                                <div id="menutwo" class="collapse">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 ftco-animate">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead class="thead-primary">
+                                                            <tr>
+                                                                <th class="text-allign">Libellés</th>
+                                                                <th colspan="4">Observations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngIf='auditResults.INFO_MX.exist == false'>
+                                                                <td class="text-allign">Serveur de Messagerie</td>
+                                                                <td colspan="4">
+                                                                    <!-- <img *ngIf='auditResults.INFO_MX.exist' src="../../assets/images/yes.png" alt="_true"> -->
+                                                                    <img *ngIf='auditResults.INFO_MX.exist == false' src="../../assets/images/no.png" alt="_false">
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf='auditResults.INFO_MX.exist'>
+                                                                <td colspan="5">
+                                                                    <div class="card">
+                                                                        <div class="card-header">
+                                                                            <a class="card-link text-allign" data-toggle="collapse" href="#sub_menu1" aria-expanded="true" aria-controls="sub_menu1">
+                                                                                    Serveurs
+                                                                                    <span class="collapsed">
+                                                                                        <i class="icon-plus-circle"></i>
+                                                                                    </span>
+                                                                                        
+                                                                                    <span class="expanded">
+                                                                                        <i class="icon-minus-circle"></i>
+                                                                                    </span>
+                                                                                </a>
+                                                                        </div>
+                                                                        <div id="sub_menu1" class="collapse show">
+                                                                            <div class="card-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12 ftco-animate">
+                                                                                        <div class="table-responsive">
+                                                                                            <table class="table">
+                                                                                                <tbody>
+                                                                                                    <tr *ngFor='let mx of auditResults.INFO_MX.list'>
+                                                                                                        <td class="text-allign">Serveur mail {{auditResults.INFO_MX.list.indexOf(mx) + 1}}</td>
+                                                                                                        <td colspan="4">{{mx}}</td>
+                                                                                                    </tr>
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="card-link" data-toggle="collapse" href="#menu3" aria-expanded="false" aria-controls="menu3">Information NS <span class="collapsed"><i class="icon-plus-circle"></i></span><span class="expanded"><i class="icon-minus-circle"></i></span></a>
+                                </div>
+                                <div id="menu3" class="collapse">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 ftco-animate">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead class="thead-primary">
+                                                            <tr>
+                                                                <th class="text-allign">Libellés</th>
+                                                                <th colspan="4">Observations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="5">
+                                                                    <div class="card">
+                                                                        <div class="card-header">
+                                                                            <a class="card-link text-allign" data-toggle="collapse" href="#sub_menu3" aria-expanded="true" aria-controls="sub_menu3">
+                                                                                    NSs
+                                                                                    <span class="collapsed">
+                                                                                        <i class="icon-plus-circle"></i>
+                                                                                    </span>
+                                                                                        
+                                                                                    <span class="expanded">
+                                                                                        <i class="icon-minus-circle"></i>
+                                                                                    </span>
+                                                                                </a>
+                                                                        </div>
+                                                                        <div id="sub_menu3" class="collapse show">
+                                                                            <div class="card-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12 ftco-animate">
+                                                                                        <div class="table-responsive">
+                                                                                            <table class="table">
+                                                                                                <tbody>
+                                                                                                    <tr *ngFor='let ns of auditResults.INFO_NS.list'>
+                                                                                                        <td class="text-allign">ns{{auditResults.INFO_NS.list.indexOf(ns) + 1}}</td>
+                                                                                                        <td colspan="4">{{ns}}</td>
+                                                                                                    </tr>
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="5">
+                                                                    <div class="card">
+                                                                        <div class="card-header">
+                                                                            <a class="card-link text-allign" data-toggle="collapse" href="#sub_menu4" aria-expanded="true" aria-controls="sub_menu4">
+                                                                                    Locations
+                                                                                    <span class="collapsed">
+                                                                                        <i class="icon-plus-circle"></i>
+                                                                                    </span>
+                                                                                        
+                                                                                    <span class="expanded">
+                                                                                        <i class="icon-minus-circle"></i>
+                                                                                    </span>
+                                                                                </a>
+                                                                        </div>
+                                                                        <div id="sub_menu4" class="collapse show">
+                                                                            <div class="card-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12 ftco-animate">
+                                                                                        <div class="table-responsive">
+                                                                                            <table class="table">
+                                                                                                <tbody>
+                                                                                                    <tr *ngFor='let loc of auditResults_loc'>
+                                                                                                        <td class="text-allign">location{{auditResults_loc.indexOf(loc) + 1}}</td>
+                                                                                                        <td colspan="4">{{loc}}</td>
+                                                                                                    </tr>
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="card-link" data-toggle="collapse" href="#menu4" aria-expanded="false" aria-controls="menu4">Sécurité<span class="collapsed"><i class="icon-plus-circle"></i></span><span class="expanded"><i class="icon-minus-circle"></i></span></a>
+                                </div>
+                                <div id="menu4" class="collapse">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 ftco-animate">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead class="thead-primary">
+                                                            <tr>
+                                                                <th class="text-allign">Libellés</th>
+                                                                <th colspan="4">Observations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-allign">SEC_DNSSEC</td>
+                                                                <td colspan="4">
+                                                                    <img *ngIf='auditResults.SEC_DNSSEC.dns_key' src="../../assets/images/yes.png" alt="_true">
+                                                                    <img *ngIf='auditResults.SEC_DNSSEC.dns_key == false' src="../../assets/images/no.png" alt="_false">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-allign">Clé DNS</td>
+                                                                <td colspan="4">
+                                                                    <img *ngIf='auditResults.SEC_DNSSEC.ds' src="../../assets/images/yes.png" alt="_true">
+                                                                    <img *ngIf='auditResults.SEC_DNSSEC.ds == false' src="../../assets/images/no.png" alt="_false">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-allign">DS</td>
+                                                                <td colspan="4">
+                                                                    <img *ngIf='auditResults.SEC_DNSSEC.exist' src="../../assets/images/yes.png" alt="_true">
+                                                                    <img *ngIf='auditResults.SEC_DNSSEC.exist == false' src="../../assets/images/no.png" alt="_false">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<button style="display: none" type="button" id="mod_btn" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Small Modal</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="top: 80px">
+        <div class="modal-content" style="background: #d9534f;">
+            <div class="modal-body" style="margin: auto; background: #d9534f;">
+                <h3 style="color:white">Nom de domaine innexistant</h3>
+            </div>
+        </div>
+    </div>
+</div>

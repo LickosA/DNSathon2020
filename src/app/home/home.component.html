@@ -1,0 +1,265 @@
+<section class="home-slider owl-carousel">
+
+    <div class="slider-item">
+        <div class="overlay"></div>
+        <div class="container-fluid">
+            <div class="row slider-text align-items-center" data-scrollax-parent="true">
+
+                <div class="col-md-5 wrap col-sm-12 ftco-animate" data-scrollax=" properties: { translateY: '70%' }" style="transform: translateZ(0px) translateY(-0.715616%);">
+                    <h1 class="mb-4 mt-5" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }" style="opacity: 0.983643; transform: translateZ(0px) translateY(-0.306692%);">Tester la performance de votre structure DNS</h1>
+                    <p class="mb-4 mb-md-5">Réaliser des mesures sur le Système des Noms de Domaines, de l’internet et de réaliser l'audit de l'infrastructure</p>
+                </div>
+                <div class="col-md-7 ftco-animate">
+                    <img id="img2" src="../../assets/images/why-us.png" class="img-fluid" alt="">
+                    <!-- <img id="img2" src="../../assets/images/iso-1-300x212.png" class="img-fluid" alt=""> -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="slider-item">
+        <div class="overlay"></div>
+        <div class="container-fluid">
+            <div class="row slider-text align-items-center" data-scrollax-parent="true">
+
+                <div class="col-md-5 wrap col-sm-12 ftco-animate" data-scrollax=" properties: { translateY: '70%' }" style="transform: translateZ(0px) translateY(0%);">
+                    <h1 class="mb-4 mt-5" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }" style="opacity: 1; transform: translateZ(0px) translateY(0%);">Hackathon Collaboratif autour du DNS</h1>
+                    <p class="mb-4 mb-md-5 sub-p" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }" style="opacity: 1; transform: translateZ(0px) translateY(0%);">Contraction de « DNS » et “Hackathon”, le DNSathon est un événement qui réunit des passionnés de technologies d’internet de profils différents qui constituent des équipes pour réaliser des mesures sur le Système des Noms de Domaines
+                        et l’internet au Bénin. </p>
+
+                </div>
+                <div class="col-md-7 ftco-animate">
+                    <img src="../../assets/images/logo_blanc_petit.png" class="img-fluid" alt="">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="owl-dots">
+        <button (click)="currentSlide(0)" class="owl-dot active">
+            <span></span>
+        </button>
+
+        <button (click)="currentSlide(1)" class="owl-dot">
+            <span></span>
+        </button>
+    </div>
+</section>
+
+<section class="ftco-domain">
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-lg-5 col-md-12 col-xm-12 col-xs-12  heading-white mb-4 mb-sm-4 mb-lg-0 ftco-animate">
+                <h2>Entrez votre nom de domaine</h2>
+                <p>Les mesures sur le Système des Noms de Domaines,l'infrastructure</p>
+            </div>
+            <div class="col-lg-7 col-md-12 col-xm-12 col-xs-12 ftco-wrap ftco-animate">
+                <form action="#" class="domain-form d-flex">
+                    <div class="form-group domain-name">
+                        <input [(ngModel)]="dn" name="dn" type="text" style="border-radius: 0" class="form-control name px-4" placeholder="Entrer votre nom de domaine...">
+                    </div>
+                    <div class="form-group domain-select d-flex">
+                        <button (click)="check()" class="search-domain btn btn-primary text-center">Auditer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- <section class="ftco-section testimony-section">
+    <div class="container">
+        <div class="row justify-content-center mb-5 pb-3">
+            <div class="col-md-7 text-center heading-section heading-section-white ftco-animate">
+                <h2 class="mb-4">Les teams qui ont contribués</h2>
+                <p>Il s'agit des équipes de labs, de configs, de tests, de rédaction de contenus</p>
+            </div>
+        </div>
+        <div class="row ftco-animate">
+            <div class="col-md-12">
+                <div class="carousel-testimony owl-carousel ftco-owl">
+                    <div class="item">
+                        <div class="testimony-wrap p-4 pb-5">
+                            <div class="text">
+                                <img src="../../assets/images/dns.jpeg" alt="" class="shadow rounded">
+                                <p class="name">Team Script</p>
+                                <span class="position">Ecriture des scriptes de test</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimony-wrap p-4 pb-5">
+                            <div class="text">
+                                <img src="../../assets/images/dns.jpeg" alt="" class="shadow rounded">
+                                <p class="name">Team Developpement</p>
+                                <span class="position">Chargé d'héberger les résultats de l'hakathon</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimony-wrap p-4 pb-5">
+                            <div class="text">
+                                <img src="../../assets/images/dns.jpeg" alt="" class="shadow rounded">
+                                <p class="name">Team Communication</p>
+                                <span class="position">Chargé de la communication</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimony-wrap p-4 pb-5">
+                            <div class="text">
+                                <img src="../../assets/images/dns.jpeg" alt="" class="shadow rounded">
+                                <p class="name">Team Organisation</p>
+                                <span class="position">Organisateur, modérateur de l'hakathon</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center mb-5 pb-5">
+            <div class="col-md-7 text-center heading-section ftco-animate">
+                <h2 class="mb-4">Rapport de chaque team</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 nav-link-wrap mb-5 pb-md-5 pb-sm-1 ftco-animate">
+                <div class="nav ftco-animate nav-pills justify-content-center text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-nextgen-tab" data-toggle="pill" href="#v-pills-nextgen" role="tab" aria-controls="v-pills-nextgen" aria-selected="true">Team Script</a>
+
+                    <a class="nav-link" id="v-pills-performance-tab" data-toggle="pill" href="#v-pills-performance" role="tab" aria-controls="v-pills-performance" aria-selected="false">Team Developpement</a>
+
+                    <a class="nav-link" id="v-pills-effect-tab" data-toggle="pill" href="#v-pills-effect" role="tab" aria-controls="v-pills-effect" aria-selected="false">Team Communication</a>
+                </div>
+            </div>
+            <div class="col-md-12 align-items-center ftco-animate">
+
+                <div class="tab-content ftco-animate" id="v-pills-tabContent">
+
+                    <div class="tab-pane fade show active" id="v-pills-nextgen" role="tabpanel" aria-labelledby="v-pills-nextgen-tab">
+                        <div class="d-md-flex">
+                            <div class="one-forth align-self-center">
+                                <img src="../../assets/images/dns.jpeg" class="img-fluid border" alt="">
+                            </div>
+                            <div class="one-half ml-md-5 align-self-center">
+                                <h2 class="mb-4">Next gen VPS hosting</h2>
+                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt voluptate, quibusdam sunt iste dolores consequatur</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="v-pills-performance" role="tabpanel" aria-labelledby="v-pills-performance-tab">
+                        <div class="d-md-flex">
+                            <div class="one-forth order-last align-self-center">
+                                <img src="../../assets/images/dns.jpeg" class="img-fluid border" alt="">
+                            </div>
+                            <div class="one-half order-first mr-md-5 align-self-center">
+                                <h2 class="mb-4">Performance VPS hosting</h2>
+                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt voluptate, quibusdam sunt iste dolores consequatur</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="v-pills-effect" role="tabpanel" aria-labelledby="v-pills-effect-tab">
+                        <div class="d-md-flex">
+                            <div class="one-forth align-self-center">
+                                <img src="../../assets/images/dns.jpeg" class="img-fluid border" alt="">
+                            </div>
+                            <div class="one-half ml-md-5 align-self-center">
+                                <h2 class="mb-4">Effective VPS hosting</h2>
+                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt voluptate, quibusdam sunt iste dolores consequatur</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section ftco-partner bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-5 pb-3">
+            <div class="col-md-7 text-center heading-section heading-section-white ftco-animate">
+                <h2 class="mb-4 text-primary">Nos Partenaires</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2 ftco-animate">
+                <a href="https://afnic.fr" target="_blank" class="partner"><img src="../../assets/images/afnic.png" class="img-fluid mt-3" alt=""></a>
+            </div>
+            <div class="col-sm-2 ftco-animate">
+                <a href="https://anpe.bj" target="_blank" class="partner"><img src="../../assets/images/ANPE-Benin.png" class="img-fluid mt-3" alt=""></a>
+            </div>
+            <div class="col-sm-2 ftco-animate">
+                <a href="https://anssi.bj" target="_blank" class="partner"><img src="../../assets/images/ANSSI-Benin.png" class="img-fluid mt-3" alt=""></a>
+            </div>
+            <div class="col-sm-2 ftco-animate">
+                <a href="https://internetsociety.org" target="_blank" class="partner"><img src="../../assets/images/internet-society.png" class="img-fluid mt-3" alt=""></a>
+            </div>
+            <div class="col-sm-2 ftco-animate">
+                <a href="https://isoceltelecom.com" target="_blank" class="partner"><img src="../../assets/images/ISOCEL-Telecom.png" class="img-fluid mt-3" alt=""></a>
+            </div>
+            <div class="col-sm-2 ftco-animate">
+                <a href="https://apdp.bj" target="_blank" class="partner"><img src="../../assets/images/APDP.png" class="img-fluid mt-3" alt=""></a>
+            </div>
+            <div class="col-sm-2 ftco-animate">
+                <a href="https://it-num.com" target="_blank" class="partner"><img src="../../assets/images/IT-Num.png" class="img-fluid mt-3" alt=""></a>
+            </div>
+            <div class="col-sm-2 ftco-animate">
+                <a href="https://jenysas.bj" target="_blank" class="partner"><img src="../../assets/images/JENY-SAS.png" class="img-fluid mt-3" alt=""></a>
+            </div>
+            <div class="col-sm-2 ftco-animate">
+                <a href="https://icann.org" target="_blank" class="partner"><img src="../../assets/images/icann.png" class="img-fluid mt-3" alt=""></a>
+            </div>
+            <div class="col-sm-2 ftco-animate">
+                <a href="https://uac.bj" target="_blank" class="partner"><img src="../../assets/images/Universite-dAbomey-Calavi.png" class="img-fluid mt-3" alt=""></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- <script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        console.log(55555);
+        var i;
+        var slides = document.getElementsByClassName("slider-item");
+        console.log(slides);
+        var dots = document.getElementsByClassName("owl-dot");
+        if (n > slides.length) {
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = slides.length
+        }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+</script> -->
